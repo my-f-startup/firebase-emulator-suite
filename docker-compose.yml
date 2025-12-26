@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  firebase-emulator-suite:
+    image: <org>/firebase-emulator-suite:latest
+    container_name: firebase-emulator-suite
+    environment:
+      PROJECT_ID: demo-project
+      # EMULATOR_FLAGS: "--only auth,firestore"
+    ports:
+      - "4000:4000" # Emulator UI
+      - "9099:9099" # Auth
+      - "8080:8080" # Firestore
+      - "9000:9000" # Realtime Database
+      - "8085:8085" # Pub/Sub
+    volumes:
+      # Optional: override configs without rebuilding the image
+      # - ./firebase.json:/app/firebase.json:ro
+      # - ./.firebaserc:/app/.firebaserc:ro
+      - firebase-emulator-data:/app/data
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:4000"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+volumes:
+  firebase-emulator-data:
