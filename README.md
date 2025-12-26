@@ -1,8 +1,6 @@
-<p align="center">
-  <img src="assets/logo/logo-symbol-256.png" width="96" />
-</p>
-
 # firebase-emulator-suite
+
+![firebase-emulator-suite logo](assets/logo/logo-symbol-256-transparent.png)
 
 Docker image for running the **Firebase Local Emulator Suite** in a container, suitable for **local development** and **CI environments**.
 
