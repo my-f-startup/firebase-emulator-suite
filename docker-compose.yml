@@ -1,25 +1,28 @@
-version: "3.9"
-
 services:
   firebase-emulator-suite:
-    image: <org>/firebase-emulator-suite:latest
+    image: myfstartup/firebase-emulator-suite:latest
     container_name: firebase-emulator-suite
     environment:
       PROJECT_ID: demo-project
       # EMULATOR_FLAGS: "--only auth,firestore"
+      # Persist data between runs. The target MUST be a subdirectory of the mounted volume:
+      # exporting directly to /app/data fails with EBUSY because it is a mount point.
+      # EMULATOR_FLAGS: "--import /app/data/export --export-on-exit /app/data/export"
     ports:
       - "4000:4000" # Emulator UI
       - "9099:9099" # Auth
       - "8080:8080" # Firestore
       - "9000:9000" # Realtime Database
       - "8085:8085" # Pub/Sub
+      - "9199:9199" # Storage
+    init: true
     volumes:
       # Optional: override configs without rebuilding the image
       # - ./firebase.json:/app/firebase.json:ro
       # - ./.firebaserc:/app/.firebaserc:ro
       - firebase-emulator-data:/app/data
     healthcheck:
-      test: ["CMD", "curl", "-fsS", "http://localhost:4000"]
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:4000"]
       interval: 10s
       timeout: 5s
       retries: 3
